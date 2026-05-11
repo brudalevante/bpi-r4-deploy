@@ -42,7 +42,7 @@ jobs:
             echo "BUILDER=./builder-wired-universal.sh" >> $GITHUB_ENV
             echo "RELEASE_TAGS=release-4gb-wired release-4gb-poe-wired release-8gb-wired release-8gb-poe-wired release-8gb-wired-unifi release-8gb-poe-wired-unifi" >> $GITHUB_ENV
           else
-            echo "BUILDER=./builder-universal.sh" >> $GITHUB_ENV
+            echo "BUILDER=./builder-wifimgr-universal.sh" >> $GITHUB_ENV
             echo "RELEASE_TAGS=release-4gb-standard release-4gb-poe release-8gb-standard release-8gb-poe" >> $GITHUB_ENV
           fi
 
