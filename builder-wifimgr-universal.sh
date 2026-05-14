@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# Validated source commits (v1.1.1, 2026-05-14):
+#   OpenWrt:  99211b26fb3b9ed71d065a1fa35ce54a0d883944  (openwrt-25.12)
+#   MTK SDK:  dbf10418baf257033cf4c590f098db1022496dc6  (tarball in repo-cache/mtk-openwrt-feeds.tar.gz)
+OPENWRT_COMMIT=${OPENWRT_COMMIT:-99211b26fb3b9ed71d065a1fa35ce54a0d883944}
+
 rm -rf openwrt
 rm -rf mtk-openwrt-feeds
 
