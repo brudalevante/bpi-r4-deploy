@@ -1368,6 +1368,14 @@ async function steerd_stop() {
     return res.ok ? l2ok(null) : l2err(res.error);
 }
 
+async function iw_survey_noise() {
+    return layer1.iw_survey_noise();
+}
+
+async function hostapd_get_neg_ttlm(ifname, mac) {
+    return layer1.hostapd_get_neg_ttlm(ifname, mac);
+}
+
 // --- MODULE EXPORT ---
 
 const Layer2 = {
@@ -1390,7 +1398,8 @@ const Layer2 = {
     wireless_backup:  layer1.wireless_backup,
     wireless_restore: layer1.wireless_restore,
     // steerd
-    steerd_get_status, steerd_start, steerd_stop
+    steerd_get_status, steerd_start, steerd_stop,
+    iw_survey_noise, hostapd_get_neg_ttlm
 };
 
 return baseclass.extend(Layer2);

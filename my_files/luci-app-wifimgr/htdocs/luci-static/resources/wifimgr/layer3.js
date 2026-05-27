@@ -200,9 +200,25 @@ async function wizard_country(country) {
 
 // --- STEERD ---
 
-async function load_steerd() {
-    const res = await layer2.steerd_get_status();
-    return res.ok ? res.data : { running: false, pid: null, log: [] };
+async function load_steerd(clients) {
+    const [statusRes, noiseRes] = await Promise.all([
+        layer2.steerd_get_status(),
+        layer2.iw_survey_noise()
+    ]);
+    const sd = statusRes.ok
+        ? statusRes.data
+        : { running: false, pid: null, log: [], script_present: false };
+    const noise = noiseRes.ok ? noiseRes.data : {};
+
+    // Fetch Neg-TTLM for each MLMR client (max_simul_links > 1) in parallel
+    const mlmrClients = (clients || []).filter(function(c) { return c.is_mld && c.max_simul_links > 1; });
+    const neg_ttlm = {};
+    await Promise.all(mlmrClients.map(async function(c) {
+        const res = await layer2.hostapd_get_neg_ttlm('ap-mld-1', c.mac);
+        neg_ttlm[c.mac] = res.ok ? res.data : { active: false, tids: [] };
+    }));
+
+    return Object.assign({}, sd, { noise, neg_ttlm });
 }
 
 async function steerd_start() {

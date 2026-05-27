@@ -2848,7 +2848,7 @@ function renderDiagnostics(diag) {
 // tabDefs replaced by static TAB_DEFS constant defined in module state section
 
 function loadSteerd() {
-    layer3.load_steerd().then(function(d) {
+    layer3.load_steerd(_data ? _data.clients : []).then(function(d) {
         _steerdData = d;
         if (_tab === 'link-policy') refreshTab('link-policy');
     });
@@ -2879,7 +2879,10 @@ function activateTab(id) {
 }
 
 function refreshNav(data) {
-    // All tabs are always visible with the static tab list
+    var hasMloAp = ((data && data.mlds) || []).some(function(m) { return m.mode === 'ap'; });
+    var lpBtn = _tabNavBtns['link-policy'];
+    if (lpBtn) lpBtn.style.display = hasMloAp ? '' : 'none';
+    if (_tab === 'link-policy' && !hasMloAp) activateTab('networks');
     if (!TAB_DEFS.some(function(t) { return t.id === _tab; })) activateTab('networks');
 }
 
