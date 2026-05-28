@@ -35,7 +35,15 @@ FREQ_L0=2462
 FREQ_L1=5180
 FREQ_L2=6135
 
-log() { echo "$(date '+%H:%M:%S') [steerd] $*"; logger -t mlo-steerd "$*"; }
+LOG_FILE=/tmp/steerd.log
+LOG_MAX=200
+log() {
+    local msg="$(date '+%H:%M:%S') [steerd] $*"
+    echo "$msg" >> "$LOG_FILE"
+    logger -t mlo-steerd "$*"
+    local lines; lines=$(wc -l < "$LOG_FILE")
+    [ "$lines" -gt "$LOG_MAX" ] && tail -n "$LOG_MAX" "$LOG_FILE" > "${LOG_FILE}.tmp" && mv "${LOG_FILE}.tmp" "$LOG_FILE"
+}
 
 # Get noise floor (dBm) for a frequency
 noise_at() {
