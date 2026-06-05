@@ -55,6 +55,15 @@ chmod +x files/etc/uci-defaults/99-set-hostname
 \cp -r ../my_files/99-pro-8x-network files/etc/uci-defaults/
 chmod +x files/etc/uci-defaults/99-pro-8x-network
 
+mkdir -p files/etc
+\cp ../my_files/fw_env_pro8x_snand.config files/etc/fw_env.config
+
+mkdir -p files/root/install-dir
+\cp ../my_files/bpi-r4-install/install-nand-pro8x.sh files/root/install-dir/install-nand.sh
+chmod +x files/root/install-dir/install-nand.sh
+\cp ../my_files/bpi-r4-install/install-nvme.sh files/root/install-dir/install-nvme.sh
+chmod +x files/root/install-dir/install-nvme.sh
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 

@@ -705,7 +705,7 @@ mt7988a-bananapi-bpi-r4-nvme
   ARTIFACT/snand-preloader.bin := mt7988-bl2 spim-nand-ubi-comb-4bg
   ARTIFACT/snand-bl31-uboot.fip := mt7988-bl31-uboot $$(DEVICE_NAME)-snand
   ARTIFACT/snand-img.bin := mt7988-bl2 spim-nand-ubi-comb-4bg | \
-  pad-to 2048k | \
+  pad-to 6144k | \
   ubinize-image fit squashfs-sysupgrade.itb
   ARTIFACT/sdcard.img.gz := mt798x-gpt sdmmc |\
   pad-to 17k | mt7988-bl2 sdmmc-comb-4bg |\

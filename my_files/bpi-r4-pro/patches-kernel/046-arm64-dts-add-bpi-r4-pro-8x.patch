@@ -756,7 +756,7 @@
 +                                };
 +
 +                                ubi_rootfs: ubi-volume-fit {
-+                                        volname = "firmware";
++                                        volname = "fit";
 +                                };
 +                        };
 +                };
