@@ -320,11 +320,3 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	mtk_mdio_cleanup(eth);
  err_free_dev:
  	mtk_free_dev(eth);
-@@ -5523,6 +5715,7 @@ static int mtk_remove(struct platform_device *pdev)
- 	netif_napi_del(&eth->rx_napi);
- 	mtk_cleanup(eth);
- 	mtk_mdio_cleanup(eth);
-+	mtk_release_all_muxes(eth);
-
- 	return 0;
- }
