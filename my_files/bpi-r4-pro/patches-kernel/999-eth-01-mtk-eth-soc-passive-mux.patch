@@ -33,7 +33,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  	int				irq[3];
  	u32				msg_enable;
  	unsigned long			sysclk;
-@@ -1463,6 +1465,27 @@ struct mtk_mac {
+@@ -1463,6 +1465,23 @@ struct mtk_mac {
  	struct notifier_block		device_notifier;
  };
 
@@ -67,7 +67,7 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  #include <linux/jhash.h>
  #include <linux/bitfield.h>
  #include <net/dsa.h>
-@@ -4888,6 +4889,176 @@ static const struct net_device_ops mtk_netdev_ops = {
+@@ -4888,6 +4889,208 @@ static const struct net_device_ops mtk_netdev_ops = {
  	.ndo_select_queue	= mtk_select_queue,
  };
 
