@@ -11,7 +11,6 @@ tar xzf /home/ipsec/mtk-feeds-cache.tar.gz
 
 \cp -r my_files/999-sfp-10-additional-quirks.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-sfp-11-rtl8261be-mdio-none.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
-\cp -r my_files/bpi-r4-pro/patches-kernel/999-sfp-12-rollball-probe-defer.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-fix-00-xfrm-sw-sa-offload-ok.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 
 ### tx_power check Ivan Mironov's patch - for defective BE14 boards with defective eeprom flash
