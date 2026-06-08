@@ -152,8 +152,8 @@
 +
 +			channel_10: channel@0 {
 +				reg = <0>;
-+				phy-mode = "usxgmii";
-+				phy-connection-type = "usxgmii";
++				phy-mode = "10gbase-r";
++				phy-connection-type = "10gbase-r";
 +				phy-handle = <&phy28>;
 +			};
 +
@@ -175,8 +175,8 @@
 +};
 +
 +&gmac1 {
-+	phy-mode = "usxgmii";
-+	phy-connection-type = "usxgmii";
++	phy-mode = "10gbase-r";
++	phy-connection-type = "10gbase-r";
 +	phy = <&phy28>;
 +	nvmem-cell-names = "mac-address";
 +	nvmem-cells = <&gmac1_mac>;
@@ -591,10 +591,9 @@
 +	slot0: pcie@0,0 {
 +		reg = <0x0000 0 0 0 0>;
 +
-+		mt7996@0,0 {
++		wifi@0,0 {
 +			compatible = "mediatek,mt76";
 +			reg = <0x0000 0 0 0 0>;
-+			device_type = "pci";
 +			mediatek,mtd-eeprom = <&factory 0x0>;
 +		};
 +	};
@@ -608,10 +607,8 @@
 +	status = "okay";
 +};
 +
-+/* M.2 key-B SIM1 */
++/* M.2 key-B CN15 LTE modem via pcie2 (1L0 SerDes, GPIO79=low routes to CN15) */
 +&pcie2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pcie2_pins>;
 +	max-link-width = <1>;
 +	status = "okay";
 +};
@@ -632,11 +629,11 @@
 +		output-high;
 +	};
 +
-+	/* 1L0 0=key-b (CN15), 1=key-m (CN13) */
++	/* 1L0 0=key-b (CN15), 1=key-m (CN13) - route to CN15 for LTE */
 +	pcie-2-hog {
 +		gpio-hog;
 +		gpios = <79 GPIO_ACTIVE_HIGH>;
-+		output-high;
++		output-low;
 +	};
 +
 +	/* 1L1 0=key-b (CN18), 1=key-m (CN14) */
@@ -671,10 +668,9 @@
 +};
 +
 +&ssusb0 {
-+	/* Use U2P only instead of both U3P/U2P due to U3P serdes shared with pcie2 */
++	/* 1L0 SerDes shared with pcie2; pcie2 enabled → ssusb0 USB2 only */
 +	phys = <&xphyu2port0 PHY_TYPE_USB2>;
 +	mediatek,u3p-dis-msk = <1>;
-+	/delete-property/ mediatek,p0_speed_fixup;
 +	status = "okay";
 +};
 +
@@ -786,6 +782,11 @@
 +
 +&watchdog {
 +	status = "okay";
++};
++
++/* Required for 10GBase-R (XFI) mode on gmac1/eth1 - da_war fix in phy-mtk-xfi-tphy.c */
++&xfi_tphy1 {
++	mediatek,usxgmii-performance-errata;
 +};
 +
 +&xsphy {

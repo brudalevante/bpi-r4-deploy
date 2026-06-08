@@ -14,13 +14,14 @@ Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
  drivers/net/ethernet/mediatek/mtk_eth_soc.c | 1 +
  1 file changed, 1 insertion(+)
 
+
 --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
 +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -5992,6 +5992,7 @@ static void mtk_remove(struct platform_device *pdev)
- 	netif_napi_del(&eth->tx_napi);
- 	netif_napi_del(&eth->rx_napi);
+@@ -5998,6 +5998,7 @@ static void mtk_remove(struct platform_device *pdev)
  	mtk_cleanup(eth);
  	free_netdev(eth->dummy_dev);
  	mtk_mdio_cleanup(eth);
 +	mtk_release_all_muxes(eth);
  }
+
+ #define DESC_SIZE(struct_name)				\
