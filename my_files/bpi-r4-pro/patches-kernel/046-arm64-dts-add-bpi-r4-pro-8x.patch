@@ -607,10 +607,9 @@
 +	status = "okay";
 +};
 +
-+/* M.2 key-B CN15 LTE modem via pcie2 (1L0 SerDes, GPIO79=low routes to CN15) */
++/* M.2 key-B CN15 / key-M CN13 - CN15 USB via VIA Labs hub (ssusb1), CN13 empty */
 +&pcie2 {
-+	max-link-width = <1>;
-+	status = "okay";
++	status = "disabled";
 +};
 +
 +/* M.2 key-M SSD */
@@ -668,9 +667,6 @@
 +};
 +
 +&ssusb0 {
-+	/* 1L0 SerDes shared with pcie2; pcie2 enabled → ssusb0 USB2 only */
-+	phys = <&xphyu2port0 PHY_TYPE_USB2>;
-+	mediatek,u3p-dis-msk = <1>;
 +	status = "okay";
 +};
 +
