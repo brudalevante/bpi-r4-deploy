@@ -7,7 +7,8 @@ rm -rf mtk-openwrt-feeds
 git clone --branch openwrt-25.12 https://github.com/openwrt/openwrt.git openwrt
 cd openwrt; git checkout 13ff2256e5dd9bc070f9a9c6a673bff4a9191837; cd -;
 
-tar xzf /home/ipsec/mtk-feeds-cache.tar.gz
+tar xzf ${MTK_FEED_TARBALL:-/home/ipsec/mtk-feeds-cache.tar.gz}
+[ -d mtk-clone ] && mv mtk-clone mtk-openwrt-feeds
 
 \cp -r my_files/999-sfp-10-additional-quirks.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 #\cp -r my_files/999-sfp-11-rtl8261be-mdio-none.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
