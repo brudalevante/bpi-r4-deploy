@@ -693,7 +693,7 @@
 +};
 --- /dev/null
 +++ b/arch/arm/dts/mt7988a-bananapi-bpi-r4-pro-8x.dtsi
-@@ -0,0 +1,241 @@
+@@ -0,0 +1,248 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2022 MediaTek Inc.
