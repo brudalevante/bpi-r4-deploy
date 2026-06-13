@@ -392,19 +392,17 @@ partprobe "${NVME_DEV}"
 sleep 2
 printf "        OK\n\n"
 
-if [ "$IS_PRO" != "1" ]; then
-    printf "        Formatting boot partition (p1 ext4)...\n"
-    mkfs.ext4 -F "${NVME_DEV}p1"
-    printf "        OK\n\n"
+printf "        Formatting boot partition (p1 ext4)...\n"
+mkfs.ext4 -F "${NVME_DEV}p1"
+printf "        OK\n\n"
 
-    printf "        Writing kernel to p1...\n"
-    mkdir -p /mnt/nvme
-    mount "${NVME_DEV}p1" /mnt/nvme
-    cp "$ITB" /mnt/nvme/"${ITB_NAME}"
-    sync
-    umount "${NVME_DEV}p1"
-    printf "        OK -- kernel written to p1\n\n"
-fi
+printf "        Writing kernel to p1...\n"
+mkdir -p /mnt/nvme
+mount "${NVME_DEV}p1" /mnt/nvme
+cp "$ITB" /mnt/nvme/"${ITB_NAME}"
+sync
+umount "${NVME_DEV}p1"
+printf "        OK -- kernel written to p1\n\n"
 
 printf "        Writing rootfs to p2 (raw FIT)...\n"
 dd if="$ITB" of="${NVME_DEV}p2" bs=1M conv=fsync
