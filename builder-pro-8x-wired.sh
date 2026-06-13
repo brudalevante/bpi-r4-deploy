@@ -80,6 +80,7 @@ chmod +x files/root/install-dir/install-nvme-unifi.sh
 chmod +x files/root/install-dir/install-menu.sh
 \cp ../my_files/bpi-r4-install/boot-nvme files/root/install-dir/boot-nvme
 chmod +x files/root/install-dir/boot-nvme
+mkdir -p files/usr/sbin
 \cp ../my_files/bpi-r4-pro/files/usr/sbin/boot-nand files/usr/sbin/boot-nand
 chmod +x files/usr/sbin/boot-nand
 
