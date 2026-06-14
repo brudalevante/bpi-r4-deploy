@@ -636,11 +636,11 @@
 +		output-high;
 +	};
 +
-+	/* 1L0 0=key-b (CN15), 1=key-m (CN13) - route to CN15 for LTE */
++	/* 1L0 route to CN13 (empty M-KEY) - keep COMBO PCIe+USB away from CN15 */
 +	pcie-2-hog {
 +		gpio-hog;
 +		gpios = <79 GPIO_ACTIVE_HIGH>;
-+		output-low;
++		output-high;
 +	};
 +
 +	/* 1L1 0=key-b (CN18), 1=key-m (CN14) */
