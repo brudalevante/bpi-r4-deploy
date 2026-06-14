@@ -11,7 +11,7 @@ tar xzf ${MTK_FEED_TARBALL:-/home/ipsec/mtk-feeds-cache.tar.gz}
 [ -d mtk-clone ] && mv mtk-clone mtk-openwrt-feeds
 
 \cp -r my_files/999-sfp-10-additional-quirks.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
-\cp -r my_files/999-sfp-11-rtl8261be-mdio-none.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
+#\cp -r my_files/999-sfp-11-rtl8261be-mdio-none.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 #\cp -r my_files/999-sfp-15-oem-sfp10gt-ignore-los.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-fix-00-xfrm-sw-sa-offload-ok.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 
@@ -80,7 +80,6 @@ chmod +x files/root/install-dir/install-nvme-unifi.sh
 chmod +x files/root/install-dir/install-menu.sh
 \cp ../my_files/bpi-r4-install/boot-nvme files/root/install-dir/boot-nvme
 chmod +x files/root/install-dir/boot-nvme
-
 mkdir -p files/usr/sbin
 \cp ../my_files/bpi-r4-pro/files/usr/sbin/boot-nand files/usr/sbin/boot-nand
 chmod +x files/usr/sbin/boot-nand

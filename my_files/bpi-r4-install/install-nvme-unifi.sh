@@ -3,9 +3,14 @@
 # Run from NAND rescue system
 
 NVME_DEV="/dev/nvme0n1"
-IS_PRO=0
+IS_PRO=1
 GH_USER="woziwrt"
 GH_REPO="bpi-r4-deploy"
+GH_TAG="release-pro-8x-wired"
+ITB_NAME="bpi-r4-pro-8x.itb"
+IMG_NAME="openwrt-mediatek-filogic-bananapi_bpi-r4-pro-8x-nvme-img.bin"
+ITB="/tmp/${ITB_NAME}"
+IMG="/tmp/${IMG_NAME}"
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
@@ -13,55 +18,8 @@ NC='\033[0m'
 
 printf "\n"
 printf "=================================================\n"
-printf "  BPI-R4 UniFi NVMe Installer\n"
+printf "  BPI-R4 Pro 8X UniFi NVMe Installer\n"
 printf "=================================================\n"
-printf "\n"
-
-# || 0. Variant selection |||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-printf "Select your board variant:\n"
-printf "\n"
-printf "  BPI-R4:\n"
-printf "  1) 8GB wired UniFi\n"
-printf "  2) 8GB PoE wired UniFi\n"
-printf "\n"
-printf "  BPI-R4 Pro 8X:\n"
-printf "  3) Pro 8X wired UniFi\n"
-printf "\n"
-printf "Enter choice [1-3]: "
-read VARIANT
-
-case "$VARIANT" in
-    1)
-        GH_TAG="release-8gb-wired-unifi"
-        ITB_NAME="bpi-r4.itb"
-        IMG_NAME="openwrt-mediatek-filogic-bananapi_bpi-r4-8gb-nvme-img.bin"
-        SETUP_TAG="release-8gb-wired-unifi"
-        ;;
-    2)
-        GH_TAG="release-8gb-poe-wired-unifi"
-        ITB_NAME="bpi-r4-poe.itb"
-        IMG_NAME="openwrt-mediatek-filogic-bananapi_bpi-r4-poe-8gb-nvme-img.bin"
-        SETUP_TAG="release-8gb-poe-wired-unifi"
-        ;;
-    3)
-        GH_TAG="release-pro-8x-unifi"
-        ITB_NAME="bpi-r4-pro-8x.itb"
-        IMG_NAME="openwrt-mediatek-filogic-bananapi_bpi-r4-pro-8x-nvme-img.bin"
-        SETUP_TAG="release-pro-8x-unifi"
-        IS_PRO=1
-        ;;
-    *)
-        printf "\n${RED}ERROR: Invalid choice!${NC}\n\n"
-        exit 1
-        ;;
-esac
-
-ITB="/tmp/${ITB_NAME}"
-IMG="/tmp/${IMG_NAME}"
-
-printf "\n"
-printf "  Selected: %s\n" "$GH_TAG"
 printf "\n"
 
 # || 0b. Disk size profile ||||||||||||||||||||||||||||||||||||||||||||||||||||
