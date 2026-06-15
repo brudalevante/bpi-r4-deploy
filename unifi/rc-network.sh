@@ -31,6 +31,12 @@ fi
 # Docker bridge forwarding rules are handled by /etc/config/firewall
 # (config include docker_wan -> /etc/docker-wan-forward.nft, chain-prepend)
 cd $NETWORK_DIR && docker-compose up -d
-echo "rc-network.sh: docker-compose up done"
+
+# Docker daemon auto-restarts containers on boot without respecting depends_on ordering.
+# Wait for mongo to be healthy, then restart unifi-network to ensure cloud connection.
+timeout 90 sh -c 'until docker exec unifi-db mongo --eval "db.adminCommand(\"ping\")" > /dev/null 2>&1; do sleep 3; done' \
+    && docker restart unifi-network \
+    || echo "rc-network.sh: mongo wait timed out, unifi-network may lack remote access"
+echo "rc-network.sh: done"
 
 exit 0

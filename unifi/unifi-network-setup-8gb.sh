@@ -215,6 +215,22 @@ fi
 
 touch "$NVME_DATA/.unifi-network-setup-done"
 
+# || Hotplug: restart unifi-network when WAN comes up ||||||||||||||||||||||||||
+#
+# Without this, if WAN is not available at boot time (e.g. cable unplugged),
+# unifi-network fails to connect to Ubiquiti cloud and remote access stays offline
+# even after WAN is restored. Protect is unaffected (uses network_mode: host).
+
+cat > /etc/hotplug.d/iface/50-unifi-network << 'HOTPLUG'
+#!/bin/sh
+[ "$ACTION" = "ifup" ] || exit 0
+[ "$INTERFACE" = "wan" ] || exit 0
+[ -f /mnt/nvme0n1p3/.unifi-network-setup-done ] || exit 0
+sleep 15
+docker restart unifi-network >/dev/null 2>&1
+HOTPLUG
+chmod +x /etc/hotplug.d/iface/50-unifi-network
+
 printf "${GREEN}=================================================${NC}\n"
 printf "${GREEN}  UniFi Network Application Setup complete! (8GB)${NC}\n"
 printf "${GREEN}=================================================${NC}\n"
