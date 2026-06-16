@@ -5,7 +5,7 @@ rm -rf openwrt
 rm -rf mtk-openwrt-feeds
 
 git clone --branch openwrt-25.12 https://github.com/openwrt/openwrt.git openwrt
-cd openwrt; git checkout 13ff2256e5dd9bc070f9a9c6a673bff4a9191837; cd -;
+cd openwrt; git checkout ${OPENWRT_COMMIT:-949487e0900b92a87b5f5bc5db9861ce3480db6a}; cd -;
 
 tar xzf ${MTK_FEED_TARBALL:-/home/ipsec/mtk-feeds-cache.tar.gz}
 [ -d mtk-clone ] && mv mtk-clone mtk-openwrt-feeds
