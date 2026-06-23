@@ -66,38 +66,6 @@ jobs:
             echo "RELEASE_TAGS=release-pro-8x-wired" >> $GITHUB_ENV
           fi
 
-      - name: Delete existing releases and tags
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const tags = process.env.RELEASE_TAGS.split(' ');
-
-            const releases = await github.rest.repos.listReleases({
-              owner,
-              repo,
-              per_page: 100
-            });
-
-            for (const tag of tags) {
-              for (const rel of releases.data) {
-                if (rel.tag_name === tag) {
-                  await github.rest.repos.deleteRelease({
-                    owner,
-                    repo,
-                    release_id: rel.id
-                  }).catch(e => console.log(`Failed to delete release ${rel.id}: ${e.message}`));
-                }
-              }
-              await github.rest.git.deleteRef({
-                owner,
-                repo,
-                ref: `tags/${tag}`
-              }).catch(e => console.log(`Failed to delete tag ${tag}: ${e.message}`));
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Free disk space on runner
         uses: jlumbroso/free-disk-space@main
         with:
@@ -117,22 +85,6 @@ jobs:
             gettext libncurses-dev libssl-dev python3-distutils python3-setuptools \
             rsync swig unzip zlib1g-dev file wget libelf-dev ccache git
 
-      - name: Restore MTK cache
-        id: cache-mtk
-        uses: actions/cache@v4
-        with:
-          path: repo-cache/mtk-openwrt-feeds.tar.gz
-          key: mtk-${{ env.MTK_COMMIT }}
-
-      - name: Clone and cache MTK feeds
-        if: steps.cache-mtk.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p repo-cache
-          git clone --branch master https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds mtk-clone
-          cd mtk-clone && git checkout ${{ env.MTK_COMMIT }} && cd ..
-          tar -czf repo-cache/mtk-openwrt-feeds.tar.gz mtk-clone
-          rm -rf mtk-clone
-
       - name: Run builder script
         run: |
           chmod +x ${{ env.BUILDER }}
@@ -140,7 +92,6 @@ jobs:
         env:
           OPENWRT_COMMIT: ${{ env.OPENWRT_COMMIT }}
           MTK_COMMIT: ${{ env.MTK_COMMIT }}
-          MTK_FEED_TARBALL: repo-cache/mtk-openwrt-feeds.tar.gz
 
       - name: Prepare release artifacts
         run: |
@@ -169,7 +120,7 @@ jobs:
       - name: Publish release-pro-8x-standard
         if: github.event.inputs.variant == 'Pro-8X-wifi'
         run: |
-          gh release delete release-pro-8x-standard --yes 2>/dev/null || true
+          gh release delete release-pro-8x-standard --yes --cleanup-tag 2>/dev/null || true
           gh release create release-pro-8x-standard rel-pro/* \
             --title "BPI-R4 Pro 8X standard WiFi (latest)" \
             --notes "Variant: standard (WiFi + wifimgr) | RAM: 8GB | BPI-R4 Pro 8X | Commit: ${{ github.event.inputs.repo_commit || github.sha }}"
@@ -179,7 +130,7 @@ jobs:
       - name: Publish release-pro-8x-wired
         if: github.event.inputs.variant == 'Pro-8X-wired'
         run: |
-          gh release delete release-pro-8x-wired --yes 2>/dev/null || true
+          gh release delete release-pro-8x-wired --yes --cleanup-tag 2>/dev/null || true
           gh release create release-pro-8x-wired rel-pro/* \
             --title "BPI-R4 Pro 8X wired (latest)" \
             --notes "Variant: wired (no wifimgr) | RAM: 8GB | BPI-R4 Pro 8X | Commit: ${{ github.event.inputs.repo_commit || github.sha }}"

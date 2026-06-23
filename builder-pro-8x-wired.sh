@@ -7,13 +7,13 @@ rm -rf mtk-openwrt-feeds
 git clone --branch openwrt-25.12 https://github.com/openwrt/openwrt.git openwrt
 cd openwrt; git checkout ${OPENWRT_COMMIT:-949487e0900b92a87b5f5bc5db9861ce3480db6a}; cd -;
 
-tar xzf ${MTK_FEED_TARBALL:-/home/ipsec/mtk-feeds-cache.tar.gz}
-[ -d mtk-clone ] && mv mtk-clone mtk-openwrt-feeds
-
-#tar xzf /home/ipsec/mtk-feeds-cache.tar.gz
+git clone --branch git01 https://github.com/mediatek/mtk-openwrt-feeds mtk-openwrt-feeds
+( cd mtk-openwrt-feeds && git checkout ${MTK_COMMIT:-42c9ff6569658fd5a71944e25f5fe7b4b4e21437} )
 
 \cp -r my_files/999-sfp-10-additional-quirks.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
-#\cp -r my_files/999-sfp-11-rtl8261be-mdio-none.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
+\cp -r my_files/999-sfp-11-rtl8261be-mdio-none.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
+\cp -r my_files/999-sfp-22-rtl8261be-boot-1g-reprobe.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
+\cp -r my_files/999-eth-21-mtk-gdm-rx-fsm-reset.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 #\cp -r my_files/999-sfp-15-oem-sfp10gt-ignore-los.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-fix-00-xfrm-sw-sa-offload-ok.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 
