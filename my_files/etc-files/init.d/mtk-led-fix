@@ -20,11 +20,16 @@
 # --- board-specific tunables (BPI-R4) ----------------------------------
 LED_ON_CTRL=0x24            # MMD 0x1f register: "LED on" control
 LED_BLINK_CTRL=0x25         # MMD 0x1f register: "LED blink" control
-LED_ON_ACTIVE_LOW=0xc007    # on-at-link, POLARITY set  (phy0/phy1/phy2)
-LED_ON_ACTIVE_HIGH=0x8007   # on-at-link, no POLARITY   (phy3)
+LED_ON_ACTIVE_LOW=0xc007    # on-at-link, POLARITY set  (phy0/phy1; phy2 on eMMC)
+LED_ON_ACTIVE_HIGH=0x8007   # on-at-link, no POLARITY   (phy3; phy2 on SD/NAND)
 LED_BLINK_TXRX=0x003f       # blink on tx/rx, all speeds
-PORTS_ACTIVE_LOW="0 1 2"    # WAN, LAN1, LAN2
+PORTS_ACTIVE_LOW="0 1"      # WAN, LAN1
 PORTS_ACTIVE_HIGH="3"       # LAN3
+# phy2 (LAN2) LED polarity is BOOT-MEDIUM DEPENDENT (HW-verified on BPI-R4):
+#   SD/NAND boot -> active-high (0x8007) = dark at no-link
+#   eMMC    boot -> active-low  (0xc007) = dark at no-link
+# Same register value gives the OPPOSITE result on eMMC vs SD/NAND, for phy2
+# only (phy0/1/3 are uniform). phy2's group is chosen at runtime in apply_leds.
 # -----------------------------------------------------------------------
 
 # Run early so the brief power-on "WAN/LAN1 lit" (inverted gphy default,
@@ -66,12 +71,22 @@ apply_leds() {
 	# phy0/phy1/phy2 are active-low (need POLARITY -> 0xc007), phy3 is
 	# active-high (no POLARITY -> 0x8007). Wrong polarity lights the LED
 	# when there is NO link.
+	# phy2 (LAN2) polarity depends on the boot medium (see tunables note).
+	# eMMC boot = NOT NAND/ubi AND the eMMC hardware boot partition exists
+	# (SD has no mmcblk0boot0; on NAND boot the cmdline carries ubi.block).
+	local low="$PORTS_ACTIVE_LOW" high="$PORTS_ACTIVE_HIGH"
+	if ! grep -q "ubi.block" /proc/cmdline && [ -e /dev/mmcblk0boot0 ]; then
+		low="$low 2"      # eMMC boot  -> phy2 active-low  (0xc007)
+	else
+		high="$high 2"    # SD/NAND boot -> phy2 active-high (0x8007)
+	fi
+
 	local p
-	for p in $PORTS_ACTIVE_LOW; do
+	for p in $low; do
 		mdio "$bus" mmd "$p:0x1f" raw "$LED_ON_CTRL"    "$LED_ON_ACTIVE_LOW"
 		mdio "$bus" mmd "$p:0x1f" raw "$LED_BLINK_CTRL" "$LED_BLINK_TXRX"
 	done
-	for p in $PORTS_ACTIVE_HIGH; do
+	for p in $high; do
 		mdio "$bus" mmd "$p:0x1f" raw "$LED_ON_CTRL"    "$LED_ON_ACTIVE_HIGH"
 		mdio "$bus" mmd "$p:0x1f" raw "$LED_BLINK_CTRL" "$LED_BLINK_TXRX"
 	done
