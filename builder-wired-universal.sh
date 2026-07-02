@@ -75,6 +75,16 @@ chmod +x files/lib/preinit/19-expand-fit-rootfs
 \cp ../my_files/etc-files/uci-defaults/96-data-mount files/etc/uci-defaults/
 chmod +x files/etc/uci-defaults/96-data-mount
 
+mkdir -p files/root/install-dir
+\cp ../my_files/bpi-r4-install/install-nand.sh files/root/install-dir/install-nand.sh
+chmod +x files/root/install-dir/install-nand.sh
+\cp ../my_files/bpi-r4-install/install-nvme.sh files/root/install-dir/install-nvme.sh
+chmod +x files/root/install-dir/install-nvme.sh
+\cp ../my_files/bpi-r4-install/install-emmc.sh files/root/install-dir/install-emmc.sh
+chmod +x files/root/install-dir/install-emmc.sh
+\cp ../my_files/bpi-r4-install/install-nvme-unifi.sh files/root/install-dir/install-nvme-unifi.sh
+chmod +x files/root/install-dir/install-nvme-unifi.sh
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 

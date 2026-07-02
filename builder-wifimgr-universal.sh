@@ -23,8 +23,6 @@ git clone --branch git01 https://github.com/mediatek/mtk-openwrt-feeds mtk-openw
 \cp -r my_files/999-sfp-22-rtl8261be-boot-1g-reprobe.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-eth-21-mtk-gdm-rx-fsm-reset.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-pcs-10-lynxi-hold-link-down-on-invalid-speed.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
-#\cp -r my_files/999-sfp-21-rtl8261be-1g-sgmii.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
-#\cp -r my_files/999-sfp-11-rtl8261be-no-rollball.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-fix-01-mac80211-btwt-ap-mode.patch mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/25.12/files/package/kernel/mac80211/patches/subsys/0139-fix-mac80211-btwt-ap-mode-he-btwt-supported.patch
 \cp -r my_files/999-fix-00-xfrm-propagate-einprogress.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/0264-wpa_s-add-btwt-join-command.patch mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/25.12/files/package/network/services/hostapd/patches/0264-wpa_s-add-btwt-join-command.patch
@@ -88,6 +86,22 @@ chmod +x files/lib/preinit/19-expand-fit-rootfs
 # NVMe /data: mount the LABEL=data partition (NVMe installs only) at /data on first boot
 \cp ../my_files/etc-files/uci-defaults/96-data-mount files/etc/uci-defaults/
 chmod +x files/etc/uci-defaults/96-data-mount
+
+mkdir -p files/root/install-dir
+\cp ../my_files/bpi-r4-install/install-nand.sh files/root/install-dir/install-nand.sh
+chmod +x files/root/install-dir/install-nand.sh
+\cp ../my_files/bpi-r4-install/install-nvme.sh files/root/install-dir/install-nvme.sh
+chmod +x files/root/install-dir/install-nvme.sh
+\cp ../my_files/bpi-r4-install/install-emmc.sh files/root/install-dir/install-emmc.sh
+chmod +x files/root/install-dir/install-emmc.sh
+\cp ../my_files/bpi-r4-install/install-nvme-unifi.sh files/root/install-dir/install-nvme-unifi.sh
+chmod +x files/root/install-dir/install-nvme-unifi.sh
+#mkdir -p files/usr/sbin
+#\cp ../my_files/bpi-r4-install/boot-nvme files/usr/sbin/boot-nvme
+#chmod +x files/usr/sbin/boot-nvme
+#\cp ../my_files/bpi-r4-pro/files/usr/sbin/boot-nand files/usr/sbin/boot-nand
+#chmod +x files/usr/sbin/boot-nand
+
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
