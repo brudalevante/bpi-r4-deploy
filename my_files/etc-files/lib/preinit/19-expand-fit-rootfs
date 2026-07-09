@@ -26,6 +26,13 @@
 #           UniFi) where production is intentionally small with data after it.
 
 expand_fit_rootfs() {
+	# Pro 8X gate: this SD auto-expand is klasik-R4-only. On Pro 8X SD its
+	# GPT "Fix" + resizepart breaks the partition layout -> fitblk fit0 fails
+	# to probe -> board won't boot from SD (regression 2026-07-07). Pro 8X
+	# boots from NAND/NVMe/eMMC anyway, so SD auto-expand is not needed here.
+	case "$(cat /sys/firmware/devicetree/base/model 2>/dev/null)" in
+		*Pro*) return 0 ;;
+	esac
 	[ -e /dev/fitrw ] || return 0
 	command -v parted     >/dev/null 2>&1 || return 0
 	command -v resize.f2fs >/dev/null 2>&1 || return 0

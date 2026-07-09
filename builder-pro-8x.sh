@@ -67,6 +67,11 @@ python3 -c 'content=open("target/linux/mediatek/filogic/config-6.12").read(); co
 \cp -r ../my_files/luci-app-modemdata-main/luci-app-modemdata/ feeds/luci/applications
 \cp -r ../my_files/luci-app-lite-watchdog/ feeds/luci/applications
 \cp -r ../my_files/luci-app-sms-tool-js-main/luci-app-sms-tool-js/ feeds/luci/applications
+# Francisco customers: fakemesh + autoreboot + cpu/temp-status (vendored)
+\cp -r ../my_files/luci-app-fakemesh/ feeds/luci/applications
+\cp -r ../my_files/luci-app-autoreboot/ feeds/luci/applications
+\cp -r ../my_files/luci-app-cpu-status/ feeds/luci/applications
+\cp -r ../my_files/luci-app-temp-status/ feeds/luci/applications
 mkdir -p files/etc/uci-defaults
 \cp -r ../my_files/99-set-hostname files/etc/uci-defaults/
 chmod +x files/etc/uci-defaults/99-set-hostname
@@ -81,6 +86,11 @@ chmod +x files/lib/preinit/19-expand-fit-rootfs
 
 mkdir -p files/etc
 \cp ../my_files/fw_env_pro8x_snand.config files/etc/fw_env.config
+
+# Francisco customers branding: SSH banner + LuCI splash (index.html -> /cgi-bin/luci)
+\cp ../my_files/customers-banner files/etc/banner
+mkdir -p files/www
+\cp ../my_files/customers-index.html files/www/index.html
 
 
 mkdir -p files/root/install-dir
@@ -111,6 +121,8 @@ chmod +x files/usr/sbin/boot-nand
 chmod -R 755 package/network/utils/uqmi/files/lib/netifd/proto
 chmod -R 755 feeds/luci/applications/luci-app-modemdata/root
 chmod -R 755 feeds/luci/applications/luci-app-sms-tool-js/root
+[ -d feeds/luci/applications/luci-app-fakemesh/root ]  && chmod -R 755 feeds/luci/applications/luci-app-fakemesh/root
+[ -d feeds/luci/applications/luci-app-autoreboot/root ] && chmod -R 755 feeds/luci/applications/luci-app-autoreboot/root
 chmod -R 755 package/luci-app-wifimgr/root
 chmod -R 755 feeds/packages/utils/modemdata/files/usr/share
 
