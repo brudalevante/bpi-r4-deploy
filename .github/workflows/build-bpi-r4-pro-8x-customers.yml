@@ -6,13 +6,9 @@
 name: Build BPI-R4 Pro 8X Customers
 
 on:
-  # Push trigger: pushing to the customers branch auto-starts the build
-  # (this branch is not the repo default, so workflow_dispatch alone would
-  # not show up in the Actions UI). Manual dispatch kept for later, once the
-  # file also lands on the default branch.
-  push:
-    branches:
-      - pro-8x-customers
+  # Manual dispatch only. NOTE: this file must ALSO live on the default branch
+  # (main) for the "Run workflow" button to appear — cherry-pick it there, then
+  # run it selecting the pro-8x-customers branch (build content comes from there).
   workflow_dispatch:
     inputs:
       repo_commit:
@@ -92,6 +88,8 @@ jobs:
           cp my_files/bpi-r4-install/install-emmc-pro8x.sh  rel-pro/
           cp my_files/bpi-r4-install/install-nand-pro8x.sh  rel-pro/
           cp my_files/bpi-r4-install/install-menu.sh        rel-pro/
+          # ship the wifimgr package (.apk) so it can be installed on any BPI-R4 (classic too)
+          cp openwrt/bin/packages/*/base/luci-app-wifimgr-*.apk rel-pro/
           cd rel-pro
           sha256sum bpi-r4-pro-8x.itb \
             openwrt-mediatek-filogic-bananapi_bpi-r4-pro-8x-nvme-img.bin \
@@ -105,6 +103,6 @@ jobs:
           gh release delete release-pro-8x-customers --yes --cleanup-tag 2>/dev/null || true
           gh release create release-pro-8x-customers rel-pro/* \
             --title "BPI-R4 Pro 8X - Customers Edition (Xiaomi_ax3600)" \
-            --notes "WiFi 7 + wifimgr + FakeMesh / DAWN / usteer roaming | RAM: 8GB | BPI-R4 Pro 8X | Hecho para Xiaomi_ax3600 - Gracias, amigo | Commit: ${{ github.event.inputs.repo_commit || github.sha }}"
+            --notes "WiFi 7 + wifimgr mesh (WDS-MLO Extender) + usteer roaming | RAM: 8GB | BPI-R4 Pro 8X | Hecho para Xiaomi_ax3600 - Gracias, amigo | Commit: ${{ github.event.inputs.repo_commit || github.sha }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
