@@ -3,7 +3,7 @@ set -euo pipefail
 
 # BUMP 2026-07-05 (main migration; predchozi git01 base: 13f39a74 = wed-refactor 06-25):
 #   OpenWrt:  6dead2869209f4ff9825f3169c129c5ef04f6273  (openwrt-25.12 HEAD, BEZE ZMENY)
-#   MTK SDK:  822c2f0603614e47ec8496571043431494fd2841  (MAIN HEAD; git01 mrazi -> MTK doporucil main)
+#   MTK SDK:  ec6b3fcef259708da3d7d2c189fa108c9bc67ac7  (MAIN HEAD; git01 mrazi -> MTK doporucil main)
 
 rm -rf openwrt
 rm -rf mtk-openwrt-feeds
@@ -12,7 +12,7 @@ git clone --branch openwrt-25.12 https://github.com/openwrt/openwrt.git openwrt
 cd openwrt; git checkout ${OPENWRT_COMMIT:-6dead2869209f4ff9825f3169c129c5ef04f6273}; cd -;
 
 git clone --branch main https://github.com/mediatek/mtk-openwrt-feeds mtk-openwrt-feeds
-( cd mtk-openwrt-feeds && git checkout ${MTK_COMMIT:-822c2f0603614e47ec8496571043431494fd2841} )
+( cd mtk-openwrt-feeds && git checkout ${MTK_COMMIT:-ec6b3fcef259708da3d7d2c189fa108c9bc67ac7} )
 
 \cp -r my_files/999-sfp-10-additional-quirks.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
 \cp -r my_files/999-sfp-11-rtl8261be-mdio-none.patch mtk-openwrt-feeds/25.12/files/target/linux/mediatek/patches-6.12
@@ -68,7 +68,6 @@ python3 -c 'content=open("target/linux/mediatek/filogic/config-6.12").read(); co
 \cp -r ../my_files/luci-app-lite-watchdog/ feeds/luci/applications
 \cp -r ../my_files/luci-app-sms-tool-js-main/luci-app-sms-tool-js/ feeds/luci/applications
 # Francisco customers: fakemesh + autoreboot + cpu/temp-status (vendored)
-\cp -r ../my_files/luci-app-fakemesh/ feeds/luci/applications
 \cp -r ../my_files/luci-app-autoreboot/ feeds/luci/applications
 \cp -r ../my_files/luci-app-cpu-status/ feeds/luci/applications
 \cp -r ../my_files/luci-app-temp-status/ feeds/luci/applications
@@ -121,7 +120,6 @@ chmod +x files/usr/sbin/boot-nand
 chmod -R 755 package/network/utils/uqmi/files/lib/netifd/proto
 chmod -R 755 feeds/luci/applications/luci-app-modemdata/root
 chmod -R 755 feeds/luci/applications/luci-app-sms-tool-js/root
-[ -d feeds/luci/applications/luci-app-fakemesh/root ]  && chmod -R 755 feeds/luci/applications/luci-app-fakemesh/root
 [ -d feeds/luci/applications/luci-app-autoreboot/root ] && chmod -R 755 feeds/luci/applications/luci-app-autoreboot/root
 chmod -R 755 package/luci-app-wifimgr/root
 chmod -R 755 feeds/packages/utils/modemdata/files/usr/share

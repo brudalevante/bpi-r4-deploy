@@ -356,13 +356,9 @@ CONFIG_PACKAGE_luci-app-strongswan-swanctl=y
 CONFIG_PACKAGE_luci-app-ttyd=y
 CONFIG_PACKAGE_luci-app-wifimgr=y
 # Francisco customers variant: mesh + monitoring + roaming
-CONFIG_PACKAGE_luci-app-fakemesh=y
 CONFIG_PACKAGE_luci-app-autoreboot=y
 CONFIG_PACKAGE_luci-app-cpu-status=y
 CONFIG_PACKAGE_luci-app-temp-status=y
-CONFIG_PACKAGE_luci-app-dawn=y
-CONFIG_PACKAGE_luci-app-usteer=y
-CONFIG_PACKAGE_dawn=y
 CONFIG_PACKAGE_usteer=y
 CONFIG_PACKAGE_umdns=y
 CONFIG_PACKAGE_ucode-mod-fs=y
